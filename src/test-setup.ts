@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom'
 import { configure } from '@testing-library/react'
+import { beforeEach, vi } from 'vitest'
 
 // Configure testing-library to use act automatically
 configure({ 
