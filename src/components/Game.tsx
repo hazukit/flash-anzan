@@ -19,8 +19,8 @@ const Game: React.FC<GameProps> = ({ onGameComplete, onBack }) => {
   const [isGameActive, setIsGameActive] = useState(true);
   const [showResult, setShowResult] = useState<'correct' | 'incorrect' | null>(null);
 
-  const timerRef = useRef<number | null>(null);
-  const numberTimerRef = useRef<number | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const numberTimerRef = useRef<NodeJS.Timeout | null>(null);
   const endGameRef = useRef<(() => Promise<void>) | null>(null);
 
   const endGame = async () => {
