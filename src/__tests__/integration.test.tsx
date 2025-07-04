@@ -3,6 +3,7 @@ import { render, screen, waitFor, act } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import App from '../App'
 import * as database from '../utils/database'
+import type { User, OperationType } from '../types'
 
 // Mock database functions
 vi.mock('../utils/database', () => ({
@@ -27,7 +28,7 @@ describe('Integration Tests', () => {
       get: vi.fn(() => null)
     }
     
-    Object.defineProperty(global, 'URLSearchParams', {
+    Object.defineProperty(globalThis, 'URLSearchParams', {
       value: vi.fn(() => mockURLSearchParams),
       writable: true,
       configurable: true
@@ -35,10 +36,10 @@ describe('Integration Tests', () => {
   })
 
   it('should complete basic user flow navigation', async () => {
-    const mockUser = {
+    const mockUser: User = {
       id: 'user-1',
       name: 'テストユーザー',
-      settings: { operations: ['addition'], maxDigits: 2, playTime: 2 },
+      settings: { operations: ['addition' as OperationType], maxDigits: 2, playTime: 2 },
       createdAt: Date.now()
     }
     
@@ -73,17 +74,17 @@ describe('Integration Tests', () => {
   })
 
   it('should handle edit mode functionality', async () => {
-    const mockUsers = [
+    const mockUsers: User[] = [
       {
         id: 'user-1',
         name: 'ユーザー1',
-        settings: { operations: ['addition'], maxDigits: 2, playTime: 2 },
+        settings: { operations: ['addition' as OperationType], maxDigits: 2, playTime: 2 },
         createdAt: Date.now()
       },
       {
         id: 'user-2',
         name: 'ユーザー2',
-        settings: { operations: ['addition'], maxDigits: 2, playTime: 2 },
+        settings: { operations: ['addition' as OperationType], maxDigits: 2, playTime: 2 },
         createdAt: Date.now()
       }
     ]
@@ -95,7 +96,7 @@ describe('Integration Tests', () => {
       get: vi.fn((param: string) => param === 'mode' ? 'edit' : null)
     }
     
-    Object.defineProperty(global, 'URLSearchParams', {
+    Object.defineProperty(globalThis, 'URLSearchParams', {
       value: vi.fn(() => mockEditModeURLSearchParams),
       writable: true,
       configurable: true
@@ -118,11 +119,11 @@ describe('Integration Tests', () => {
   })
 
   it('should handle normal mode (no edit functionality)', async () => {
-    const mockUsers = [
+    const mockUsers: User[] = [
       {
         id: 'user-1',
         name: 'ユーザー1',
-        settings: { operations: ['addition'], maxDigits: 2, playTime: 2 },
+        settings: { operations: ['addition' as OperationType], maxDigits: 2, playTime: 2 },
         createdAt: Date.now()
       }
     ]
@@ -134,7 +135,7 @@ describe('Integration Tests', () => {
       get: vi.fn(() => null)
     }
     
-    Object.defineProperty(global, 'URLSearchParams', {
+    Object.defineProperty(globalThis, 'URLSearchParams', {
       value: vi.fn(() => mockNormalModeURLSearchParams),
       writable: true,
       configurable: true
@@ -207,11 +208,11 @@ describe('Integration Tests', () => {
   })
 
   it('should handle user deletion flow', async () => {
-    const mockUsers = [
+    const mockUsers: User[] = [
       {
         id: 'user-1',
         name: 'テストユーザー',
-        settings: { operations: ['addition'], maxDigits: 2, playTime: 2 },
+        settings: { operations: ['addition' as OperationType], maxDigits: 2, playTime: 2 },
         createdAt: Date.now()
       }
     ]
@@ -224,7 +225,7 @@ describe('Integration Tests', () => {
       get: vi.fn((param: string) => param === 'mode' ? 'edit' : null)
     }
     
-    Object.defineProperty(global, 'URLSearchParams', {
+    Object.defineProperty(globalThis, 'URLSearchParams', {
       value: vi.fn(() => mockEditModeURLSearchParams),
       writable: true,
       configurable: true
@@ -232,7 +233,7 @@ describe('Integration Tests', () => {
 
     // Mock confirm dialog
     const mockConfirm = vi.fn(() => true)
-    global.confirm = mockConfirm
+    globalThis.confirm = mockConfirm
 
     render(<App />)
     const user = userEvent.setup()

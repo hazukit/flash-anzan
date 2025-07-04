@@ -60,7 +60,7 @@ describe('AppContext', () => {
       get: vi.fn((param: string) => param === 'mode' ? 'edit' : null)
     }
     
-    Object.defineProperty(global, 'URLSearchParams', {
+    Object.defineProperty(globalThis, 'URLSearchParams', {
       value: vi.fn(() => mockURLSearchParams),
       writable: true,
       configurable: true

@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event'
 import Home from '../Home'
 import { AppProvider } from '../../contexts/AppContext'
 import * as database from '../../utils/database'
+import type { OperationType } from '../../types'
 
 // Mock database functions
 vi.mock('../../utils/database', () => ({
@@ -21,7 +22,7 @@ const renderHome = (editMode = false) => {
     get: vi.fn((param: string) => param === 'mode' && editMode ? 'edit' : null)
   }
   
-  Object.defineProperty(global, 'URLSearchParams', {
+  Object.defineProperty(globalThis, 'URLSearchParams', {
     value: vi.fn(() => mockURLSearchParams),
     writable: true,
     configurable: true
@@ -73,13 +74,13 @@ describe('Home Component', () => {
       {
         id: '1',
         name: 'テストユーザー1',
-        settings: { operations: ['addition'], maxDigits: 2, playTime: 2 },
+        settings: { operations: ['addition' as OperationType], maxDigits: 2, playTime: 2 },
         createdAt: Date.now()
       },
       {
         id: '2',
         name: 'テストユーザー2',
-        settings: { operations: ['addition'], maxDigits: 2, playTime: 2 },
+        settings: { operations: ['addition' as OperationType], maxDigits: 2, playTime: 2 },
         createdAt: Date.now()
       }
     ]
@@ -111,7 +112,7 @@ describe('Home Component', () => {
     const mockUsers = [{
       id: '1',
       name: 'テストユーザー',
-      settings: { operations: ['addition'], maxDigits: 2, playTime: 2 },
+      settings: { operations: ['addition' as OperationType], maxDigits: 2, playTime: 2 },
       createdAt: Date.now()
     }]
     vi.mocked(database.getUsers).mockResolvedValue(mockUsers)
@@ -137,7 +138,7 @@ describe('Home Component', () => {
     const mockUsers = [{
       id: '1',
       name: 'テストユーザー',
-      settings: { operations: ['addition'], maxDigits: 2, playTime: 2 },
+      settings: { operations: ['addition' as OperationType], maxDigits: 2, playTime: 2 },
       createdAt: Date.now()
     }]
     vi.mocked(database.getUsers).mockResolvedValue(mockUsers)
@@ -171,7 +172,7 @@ describe('Home Component', () => {
     const mockNewUser = {
       id: 'new-id',
       name: '新しいユーザー',
-      settings: { operations: ['addition'], maxDigits: 2, playTime: 2 },
+      settings: { operations: ['addition' as OperationType], maxDigits: 2, playTime: 2 },
       createdAt: Date.now()
     }
     vi.mocked(database.createUser).mockResolvedValue(mockNewUser)
@@ -206,7 +207,7 @@ describe('Home Component', () => {
     const mockUsers = [{
       id: '1',
       name: 'テストユーザー',
-      settings: { operations: ['addition'], maxDigits: 2, playTime: 2 },
+      settings: { operations: ['addition' as OperationType], maxDigits: 2, playTime: 2 },
       createdAt: Date.now()
     }]
     vi.mocked(database.getUsers).mockResolvedValue(mockUsers)
@@ -214,7 +215,7 @@ describe('Home Component', () => {
 
     // Mock window.confirm
     const mockConfirm = vi.fn(() => true)
-    global.confirm = mockConfirm
+    globalThis.confirm = mockConfirm
 
     renderHome(true)
     const user = userEvent.setup()

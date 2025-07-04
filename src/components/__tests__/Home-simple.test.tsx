@@ -3,6 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import Home from '../Home'
 import { AppProvider } from '../../contexts/AppContext'
 import * as database from '../../utils/database'
+import type { User, OperationType } from '../../types'
 
 // Mock database functions
 vi.mock('../../utils/database', () => ({
@@ -20,7 +21,7 @@ describe('Home Component - Simple Tests', () => {
     vi.mocked(database.getUsers).mockResolvedValue([])
     
     // Set up clean URLSearchParams mock
-    Object.defineProperty(global, 'URLSearchParams', {
+    Object.defineProperty(globalThis, 'URLSearchParams', {
       value: vi.fn(() => ({
         get: vi.fn(() => null)
       })),
@@ -54,11 +55,11 @@ describe('Home Component - Simple Tests', () => {
   })
 
   it('should display users when they exist', async () => {
-    const mockUsers = [
+    const mockUsers: User[] = [
       {
         id: '1',
         name: 'テストユーザー',
-        settings: { operations: ['addition'], maxDigits: 2, playTime: 2 },
+        settings: { operations: ['addition' as OperationType], maxDigits: 2, playTime: 2 },
         createdAt: Date.now()
       }
     ]
@@ -89,7 +90,7 @@ describe('Home Component - Simple Tests', () => {
 
   it('should show edit mode when URL parameter is set', async () => {
     // Mock edit mode URLSearchParams
-    Object.defineProperty(global, 'URLSearchParams', {
+    Object.defineProperty(globalThis, 'URLSearchParams', {
       value: vi.fn(() => ({
         get: vi.fn((param: string) => param === 'mode' ? 'edit' : null)
       })),
