@@ -64,7 +64,7 @@ const appReducer = (state: AppState, action: AppAction): AppState => {
       return { ...state, loading: action.payload };
     case 'SET_ERROR':
       return { ...state, error: action.payload };
-    case 'DELETE_USER':
+    case 'DELETE_USER': {
       const filteredUsers = state.users.filter(user => user.id !== action.payload);
       const newCurrentUser = state.currentUser?.id === action.payload ? null : state.currentUser;
       return {
@@ -72,6 +72,7 @@ const appReducer = (state: AppState, action: AppAction): AppState => {
         users: filteredUsers,
         currentUser: newCurrentUser
       };
+    }
     case 'SET_EDIT_MODE':
       return { ...state, isEditMode: action.payload };
     default:
