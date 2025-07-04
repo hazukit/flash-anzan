@@ -13,7 +13,7 @@ type Screen = 'home' | 'settings' | 'countdown' | 'game' | 'result' | 'ranking'
 function App() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('home')
 
-  const navigateToSettings = (_userId: string) => {
+  const navigateToSettings = () => {
     setCurrentScreen('settings')
   }
 

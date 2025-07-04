@@ -58,7 +58,7 @@ const Settings: React.FC<SettingsProps> = ({ onStartGame, onBack }) => {
       });
       dispatch({ type: 'SET_ERROR', payload: null });
       onStartGame();
-    } catch (error) {
+    } catch {
       dispatch({ type: 'SET_ERROR', payload: '設定の保存に失敗しました' });
     } finally {
       dispatch({ type: 'SET_LOADING', payload: false });

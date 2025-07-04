@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useApp } from '../contexts/AppContext';
 import { generateProblem, formatProblemDisplay } from '../utils/gameLogic';
 import { saveGameSession } from '../utils/database';
@@ -71,7 +71,7 @@ const Game: React.FC<GameProps> = ({ onGameComplete, onBack }) => {
           });
           onGameComplete();
         }, 0);
-      } catch (error) {
+      } catch {
         setTimeout(() => {
           dispatch({ type: 'SET_ERROR', payload: 'ゲーム結果の保存に失敗しました' });
           onGameComplete();
@@ -81,6 +81,14 @@ const Game: React.FC<GameProps> = ({ onGameComplete, onBack }) => {
       setTimeout(() => onGameComplete(), 0);
     }
   };
+
+  const generateNewProblem = useCallback(() => {
+    if (!state.currentUser) return;
+
+    const problem = generateProblem(state.currentUser.settings);
+    setCurrentProblem(problem);
+    setAnswer('');
+  }, [state.currentUser]);
 
   // endGameの最新の参照を保持
   useEffect(() => {
@@ -104,19 +112,14 @@ const Game: React.FC<GameProps> = ({ onGameComplete, onBack }) => {
       });
     }, 1000);
 
+    // numberTimerRefの現在の値をクロージャでキャプチャ
+    const currentNumberTimer = numberTimerRef.current;
+
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
-      if (numberTimerRef.current) clearTimeout(numberTimerRef.current);
+      if (currentNumberTimer) clearTimeout(currentNumberTimer);
     };
-  }, [state.currentUser]);
-
-  const generateNewProblem = () => {
-    if (!state.currentUser) return;
-
-    const problem = generateProblem(state.currentUser.settings);
-    setCurrentProblem(problem);
-    setAnswer('');
-  };
+  }, [state.currentUser, generateNewProblem]);
 
 
   const handleAnswerSubmit = () => {

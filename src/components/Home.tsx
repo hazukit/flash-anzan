@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useApp } from '../contexts/AppContext';
 import { getUsers, createUser, deleteUser } from '../utils/database';
 
@@ -13,21 +13,21 @@ const Home: React.FC<HomeProps> = ({ onSelectUser, onShowRanking }) => {
   const [newUserName, setNewUserName] = useState('');
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
 
-  useEffect(() => {
-    loadUsers();
-  }, []);
-
-  const loadUsers = async () => {
+  const loadUsers = useCallback(async () => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true });
       const users = await getUsers();
       dispatch({ type: 'SET_USERS', payload: users });
-    } catch (error) {
+    } catch {
       dispatch({ type: 'SET_ERROR', payload: 'ユーザーの読み込みに失敗しました' });
     } finally {
       dispatch({ type: 'SET_LOADING', payload: false });
     }
-  };
+  }, [dispatch]);
+
+  useEffect(() => {
+    loadUsers();
+  }, [loadUsers]);
 
   const handleCreateUser = async () => {
     if (!newUserName.trim()) {
@@ -42,7 +42,7 @@ const Home: React.FC<HomeProps> = ({ onSelectUser, onShowRanking }) => {
       setNewUserName('');
       setShowCreateUser(false);
       dispatch({ type: 'SET_ERROR', payload: null });
-    } catch (error) {
+    } catch {
       dispatch({ type: 'SET_ERROR', payload: 'ユーザーの作成に失敗しました' });
     } finally {
       dispatch({ type: 'SET_LOADING', payload: false });
@@ -58,7 +58,7 @@ const Home: React.FC<HomeProps> = ({ onSelectUser, onShowRanking }) => {
         await deleteUser(userId);
         dispatch({ type: 'DELETE_USER', payload: userId });
         setSelectedUserId(null);
-      } catch (error) {
+      } catch {
         dispatch({ type: 'SET_ERROR', payload: 'ユーザーの削除に失敗しました' });
       } finally {
         dispatch({ type: 'SET_LOADING', payload: false });

@@ -31,8 +31,8 @@ describe('Database Functions - Core', () => {
     })
 
     it('should get all users', async () => {
-      const user1 = await createUser('ユーザー1')
-      const user2 = await createUser('ユーザー2')
+      await createUser('ユーザー1')
+      await createUser('ユーザー2')
 
       const users = await getUsers()
 

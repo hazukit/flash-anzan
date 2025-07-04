@@ -42,7 +42,7 @@ export const generateProblem = (settings: DifficultySettings): Problem => {
       correctAnswer = numbers[0] * numbers[1];
       break;
       
-    case 'division':
+    case 'division': {
       // 2つの数字の割り算（整数になるよう調整）
       const divisor = Math.floor(Math.random() * 9) + 2;
       const quotient = Math.floor(Math.random() * (max / divisor)) + 1;
@@ -50,6 +50,7 @@ export const generateProblem = (settings: DifficultySettings): Problem => {
       numbers = [dividend, divisor];
       correctAnswer = quotient;
       break;
+    }
       
     default:
       throw new Error(`Unknown operation: ${operation}`);

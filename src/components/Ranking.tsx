@@ -21,7 +21,7 @@ const Ranking: React.FC<RankingProps> = ({ onBack }) => {
       setError(null);
       const weeklyRankings = await getWeeklyRanking();
       setRankings(weeklyRankings);
-    } catch (err) {
+    } catch {
       setError('ランキングの読み込みに失敗しました');
     } finally {
       setLoading(false);

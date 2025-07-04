@@ -101,7 +101,7 @@ describe('Integration Tests', () => {
       configurable: true
     })
 
-    const { container } = render(<App />)
+    render(<App />)
 
     await waitFor(() => {
       expect(screen.getByText('🛠️ 編集モード')).toBeInTheDocument()
