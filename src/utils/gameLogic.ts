@@ -98,3 +98,18 @@ export const getOperationLabel = (operation: OperationType): string => {
     default: return '';
   }
 };
+
+export const calculateAnswer = (numbers: number[], operation: OperationType): number => {
+  switch (operation) {
+    case 'addition':
+      return numbers.reduce((sum, num) => sum + num, 0);
+    case 'subtraction':
+      return numbers.reduce((result, num, index) => index === 0 ? num : result - num);
+    case 'multiplication':
+      return numbers.reduce((product, num) => product * num, 1);
+    case 'division':
+      return numbers.reduce((result, num, index) => index === 0 ? num : result / num);
+    default:
+      throw new Error(`Unknown operation: ${operation}`);
+  }
+};

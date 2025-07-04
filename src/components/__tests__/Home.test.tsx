@@ -43,7 +43,10 @@ describe('Home Component', () => {
   it('should render title', async () => {
     renderHome()
     
-    expect(screen.getByText('フラッシュ暗算')).toBeInTheDocument()
+    await waitFor(() => {
+      expect(screen.getByText('フラッシュ暗算')).toBeInTheDocument()
+    })
+    
     await waitFor(() => {
       expect(screen.getByText('ユーザーが登録されていません')).toBeInTheDocument()
     })
@@ -114,11 +117,13 @@ describe('Home Component', () => {
     vi.mocked(database.getUsers).mockResolvedValue(mockUsers)
 
     // Test normal mode
-    renderHome(false)
+    const { unmount } = renderHome(false)
     await waitFor(() => {
       expect(screen.getByText('テストユーザー')).toBeInTheDocument()
       expect(screen.queryByText('削除')).not.toBeInTheDocument()
     })
+    
+    unmount()
 
     // Test edit mode
     renderHome(true)

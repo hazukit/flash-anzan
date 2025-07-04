@@ -43,7 +43,7 @@ const appReducer = (state: AppState, action: AppAction): AppState => {
         users: [...state.users, action.payload],
         currentUser: action.payload 
       };
-    case 'UPDATE_USER_SETTINGS':
+    case 'UPDATE_USER_SETTINGS': {
       const updatedUsers = state.users.map(user =>
         user.id === action.payload.userId
           ? { ...user, settings: action.payload.settings }
@@ -57,6 +57,7 @@ const appReducer = (state: AppState, action: AppAction): AppState => {
         users: updatedUsers,
         currentUser: updatedCurrentUser
       };
+    }
     case 'SET_GAME_RESULT':
       return { ...state, gameResult: action.payload };
     case 'SET_LOADING':

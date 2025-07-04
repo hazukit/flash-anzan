@@ -68,7 +68,7 @@ describe('Integration Tests', () => {
 
     // Should navigate to settings screen
     await waitFor(() => {
-      expect(screen.getByText('ゲーム設定')).toBeInTheDocument()
+      expect(screen.getByText('テストユーザーの設定')).toBeInTheDocument()
     })
   })
 

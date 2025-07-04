@@ -1,4 +1,12 @@
 import '@testing-library/jest-dom'
+import { configure } from '@testing-library/react'
+
+// Configure testing-library to use act automatically
+configure({ 
+  testIdAttribute: 'data-testid',
+  asyncUtilTimeout: 5000,
+  computedStyleSupportsPseudoElements: true
+})
 
 // Create a store for each test
 let store = new Map()
@@ -42,4 +50,20 @@ Object.defineProperty(globalThis, 'URLSearchParams', {
   })),
   writable: true,
   configurable: true
+})
+
+// Mock window.location
+Object.defineProperty(window, 'location', {
+  value: {
+    href: 'http://localhost:3000',
+    origin: 'http://localhost:3000',
+    protocol: 'http:',
+    host: 'localhost:3000',
+    hostname: 'localhost',
+    port: '3000',
+    pathname: '/',
+    search: '',
+    hash: ''
+  },
+  writable: true
 })
